@@ -1,0 +1,36 @@
+id = "cmc.plugins"
+name = "Plugins"
+# Semver, bumped at push time (not per-commit) — `herdr plugin install`
+# pins by git commit SHA, not this field, so it's a human signal only, not
+# load-bearing. While 0.x: minor for anything that changes what a user
+# sees (new capability, new message, changed default), patch for a
+# fix/perf change with no new observable capability, no bump for
+# docs/tests/internal-only refactors.
+version = "0.3.0"
+min_herdr_version = "0.7.0"
+description = "Manage herdr plugins from inside herdr: list, toggle enabled/disabled, uninstall, inspect, install, update, run/bind actions, and browse the public registry"
+platforms = ["linux", "macos"]
+
+[[build]]
+command = ["bash", "install-deps.sh"]
+
+# The user-facing entry point. Herdr qualifies it globally as `cmc.plugins.open`.
+# Bind this in config.toml (type = "plugin_action"), not the `list` pane below
+# directly — plugin_action commands run through the server's own dispatch and
+# get $HERDR_BIN_PATH, so they don't depend on `herdr` being on the user's PATH.
+[[actions]]
+id = "open"
+title = "Plugins"
+contexts = ["workspace"]
+command = ["bash", "open.sh"]
+
+# One pane, two views — `tab` flips between installed and browse (see
+# list-plugins.sh). Not two panes: browsing/installing is a different
+# concern from managing what's installed, but it's still one plugin's UI.
+[[panes]]
+id = "list"
+title = "Plugins"
+placement = "popup"
+command = ["bash", "list-plugins.sh"]
+width = "85%"
+height = "85%"
