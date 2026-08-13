@@ -63,6 +63,7 @@ if command -v fzf >/dev/null 2>&1; then
           --bind="?:execute-silent(bash '$script_dir/help-toggle.sh')+refresh-preview" \
           --bind="tab:execute-silent(bash '$script_dir/toggle-mode.sh')+reload(bash '$script_dir/unified-render.sh')+transform-header(bash '$script_dir/mode-header.sh')+first" \
           --bind="every(0.5):reload(bash '$script_dir/unified-render.sh')" \
+          --bind="result:transform-footer(bash '$script_dir/zero-match-hint.sh')" \
           --preview="bash '$script_dir/preview-dispatcher.sh' {2}" \
           --preview-window='right:50%' \
     >/dev/null || true

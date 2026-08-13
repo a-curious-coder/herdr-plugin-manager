@@ -6,7 +6,7 @@ name = "Plugins"
 # sees (new capability, new message, changed default), patch for a
 # fix/perf change with no new observable capability, no bump for
 # docs/tests/internal-only refactors.
-version = "0.5.0"
+version = "0.6.0"
 min_herdr_version = "0.7.0"
 description = "Manage herdr plugins from inside herdr: list, toggle enabled/disabled, uninstall, inspect, install, update, run/bind actions, open a plugin's repo, and browse the public registry"
 platforms = ["linux", "macos"]
