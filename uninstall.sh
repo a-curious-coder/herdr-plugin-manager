@@ -6,15 +6,14 @@
 set -uo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: uninstall.sh <plugin_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
-plugin=$("$herdr_bin" plugin list --json | jq -c --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id)
-')
+plugin=$(plugin_json_by_id "$id")
 if [[ -z "$plugin" ]]; then
   echo "$id is not installed."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
@@ -24,7 +23,7 @@ echo "Uninstall $name ($id)? This removes its files and config dir. No undo — 
 read -r -p "Type the plugin id to confirm ($id): " confirm
 if [[ "$confirm" != "$id" ]]; then
   echo "Cancelled."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
@@ -39,4 +38,4 @@ else
   echo "Uninstall failed (exit $status). See output above."
 fi
 
-read -r -p "Press enter to continue..." _
+pause

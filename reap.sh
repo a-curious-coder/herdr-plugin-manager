@@ -11,12 +11,12 @@
 # matter for a specific plugin.
 set -uo pipefail
 
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: reap.sh <plugin_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
-plugin=$("$herdr_bin" plugin list --json | jq -c --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id)
-')
+plugin=$(plugin_json_by_id "$id")
 [[ -n "$plugin" ]] || exit 0
 
 # Safety guard: only ever kill a plugin's processes once it's actually

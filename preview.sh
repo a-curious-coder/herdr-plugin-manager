@@ -6,12 +6,12 @@
 # source.kind == "github" — local sources carry just "kind".
 set -euo pipefail
 
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: preview.sh <plugin_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
-plugin=$("$herdr_bin" plugin list --json | jq -c --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id)
-')
+plugin=$(plugin_json_by_id "$id")
 [[ -n "$plugin" ]] || { echo "no such plugin: $id"; exit 0; }
 
 config_dir=$("$herdr_bin" plugin config-dir "$id" 2>/dev/null || echo "n/a")

@@ -17,6 +17,8 @@ d     uninstall the highlighted plugin — asks you to type its id to confirm
 a     list the highlighted plugin's own actions — enter runs one now,
       ctrl-o binds it to a key in config.toml (shown + confirmed first)
 z     zoom the preview pane between 50% and 90% width
+o     open the highlighted plugin's GitHub repo in your browser
+      (no-op for local plugins — they have no repo page)
 shift-up / shift-down   scroll the preview pane (built into fzf, no bind needed)
 ?     toggle this help / the per-row preview
 

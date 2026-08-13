@@ -9,12 +9,11 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: toggle.sh <plugin_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
-enabled=$("$herdr_bin" plugin list --json | jq -r --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id) | .enabled
-')
+enabled=$(plugin_json_by_id "$id" | jq -r '.enabled')
 
 if [[ "$enabled" == "true" ]]; then
   "$herdr_bin" plugin disable "$id" >/dev/null

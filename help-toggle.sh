@@ -7,8 +7,4 @@ set -euo pipefail
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$script_dir/paths.sh"
 
-if [[ -f "$HELP_FILE" ]]; then
-  rm -f "$HELP_FILE"
-else
-  touch "$HELP_FILE"
-fi
+flip_value "$HELP_FILE" off on

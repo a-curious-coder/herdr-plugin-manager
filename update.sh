@@ -7,8 +7,8 @@
 # UPDATING_DIR/$id before this started — always clean that marker up on
 # exit (success, failure, or interruption) so a row doesn't spin forever.
 # On success, also flips this plugin's entry in the cached update-check
-# result to false, so the cheap tick-render (render.sh) shows it as current
-# immediately instead of waiting for the next full network refresh.
+# result to false, so the cheap tick-render (assemble-rows.sh) shows it as
+# current immediately instead of waiting for the next full network refresh.
 #
 # ponytail: doesn't touch the pinned refs in
 # dotfiles/herdr/scripts/install-herdr-plugins.sh — that file is a deliberate,
@@ -25,11 +25,10 @@ herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
 trap 'rm -f "$UPDATING_DIR/$id"' EXIT
 
-source_json=$("$herdr_bin" plugin list --json | jq -c --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id) | .source
-')
+plugin=$(plugin_json_by_id "$id")
 # Not installed (e.g. 'u' pressed on a browse-mode row) — nothing to update.
-[[ -n "$source_json" ]] || exit 0
+[[ -n "$plugin" ]] || exit 0
+source_json=$(jq -c '.source' <<<"$plugin")
 
 kind=$(jq -r '.kind // empty' <<<"$source_json")
 [[ "$kind" == "github" ]] || exit 0

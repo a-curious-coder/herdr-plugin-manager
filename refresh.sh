@@ -11,5 +11,5 @@ source "$script_dir/paths.sh"
 if [[ "$(current_mode)" == "catalog" ]]; then
   bash "$script_dir/fetch-catalog.sh"
 else
-  bash "$script_dir/build-rows.sh" >/dev/null
+  bash "$script_dir/assemble-rows.sh" --network >/dev/null
 fi

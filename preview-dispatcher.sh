@@ -9,7 +9,7 @@ source "$script_dir/paths.sh"
 
 id="${1:?usage: preview-dispatcher.sh <plugin_id>}"
 
-if [[ -f "$HELP_FILE" ]]; then
+if help_shown; then
   bash "$script_dir/help.sh"
 elif [[ "$(current_mode)" == "catalog" ]]; then
   bash "$script_dir/preview-catalog.sh" "$id"

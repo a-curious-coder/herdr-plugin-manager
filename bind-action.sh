@@ -6,6 +6,8 @@
 # config immediately on success so the new key works without restarting.
 set -uo pipefail
 
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: bind-action.sh <plugin_id> <action_id>}"
 action_id="${2:?usage: bind-action.sh <plugin_id> <action_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
@@ -13,19 +15,19 @@ config_path="$HOME/Projects/personal/dotfiles/herdr/.config/herdr/config.toml"
 
 if [[ ! -f "$config_path" ]]; then
   echo "config.toml not found at $config_path — bind it by hand."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
-title=$("$herdr_bin" plugin list --json | jq -r --arg id "$id" --arg aid "$action_id" '
-  .result.plugins[] | select(.plugin_id == $id) | .actions[] | select(.id == $aid) | .title
+title=$(plugin_json_by_id "$id" | jq -r --arg aid "$action_id" '
+  .actions[] | select(.id == $aid) | .title
 ')
 
 echo "Binding ${id}.${action_id} (${title:-no title})"
 read -r -p "Key (e.g. prefix+alt+m): " key
 if [[ -z "$key" ]]; then
   echo "Cancelled."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
@@ -44,7 +46,7 @@ echo "$block"
 read -r -p "Confirm? [y/N] " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
   echo "Cancelled."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
@@ -56,4 +58,4 @@ else
   echo "Bound $key -> ${id}.${action_id}. Reload config manually if it doesn't take effect."
 fi
 
-read -r -p "Press enter to continue..." _
+pause

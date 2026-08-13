@@ -1,7 +1,7 @@
 #!/bin/bash
-# Plugins: pure row-building logic, shared by build-rows.sh (full network
-# refresh) and render.sh (cheap tick refresh) so both produce identical TSV
-# shape. No top-level side effects — safe to source anywhere.
+# Plugins: pure row-building logic, used by assemble-rows.sh (both the cheap
+# and --network paths) so they produce identical TSV shape. No top-level
+# side effects — safe to source anywhere.
 #
 # Row fields: sort_key state plugin_id name source_kind. state is one of
 # s(pinner, update in flight) / d(isabled) / u(pdate available) / e(nabled,

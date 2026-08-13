@@ -6,22 +6,21 @@
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$script_dir/paths.sh"
 id="${1:?usage: actions-picker.sh <plugin_id>}"
 herdr_bin="${HERDR_BIN_PATH:-herdr}"
 
-plugin=$("$herdr_bin" plugin list --json | jq -c --arg id "$id" '
-  .result.plugins[] | select(.plugin_id == $id)
-')
+plugin=$(plugin_json_by_id "$id")
 if [[ -z "$plugin" ]]; then
   echo "$id is not installed — nothing to invoke yet."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
 actions=$(jq -c '.actions // []' <<<"$plugin")
 if [[ "$(jq 'length' <<<"$actions")" -eq 0 ]]; then
   echo "$id declares no actions."
-  read -r -p "Press enter to continue..." _
+  pause
   exit 0
 fi
 
@@ -41,8 +40,8 @@ if command -v fzf >/dev/null 2>&1; then
   echo "$output"
   echo
   echo "Invoked ${id}.${action_id}."
-  read -r -p "Press enter to continue..." _
+  pause
 else
   printf '%s\n' "$rows" | awk -F'\t' '{printf "%-24s  %-32s  %s\n", $1, $2, $3}'
-  read -r -p "Press enter to continue..." _
+  pause
 fi
