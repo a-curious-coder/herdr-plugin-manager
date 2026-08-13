@@ -23,8 +23,8 @@ if [[ "$token2" != "$plugin_id" ]]; then
   failures=$((failures + 1))
 fi
 
-# colorize-catalog.sh row shape: installed plugin_id name full_name subdir stars updated_at
-catalog_row=$(printf '0\t%s\tSome Plugin\towner/repo\t\t42\t2026-01-01T00:00:00Z\n' "$plugin_id")
+# colorize-catalog.sh row shape: installed plugin_id name description stars updated_at
+catalog_row=$(printf '0\t%s\tSome Plugin\tA test description\t42\t2026-01-01T00:00:00Z\n' "$plugin_id")
 token2=$(bash "$script_dir/colorize-catalog.sh" <<<"$catalog_row" | awk '{print $2}')
 if [[ "$token2" != "$plugin_id" ]]; then
   echo "FAIL: colorize-catalog.sh token 2 is '$token2', expected plugin_id '$plugin_id'"

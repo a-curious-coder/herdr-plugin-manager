@@ -4,6 +4,12 @@
 # so rows are per-manifest, not per-repo), sorted by the requested key.
 # Cross-references currently-installed plugin_ids so already-installed rows
 # can be marked instead of offered again as if new.
+#
+# owner/repo isn't in the row — it's a lookup detail (install-from-catalog.sh
+# and preview-catalog.sh both re-derive it from the cache by plugin_id when
+# they actually need it), not something worth a column: the name + a real
+# description tells you more about whether you want a plugin than its
+# GitHub path does.
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -28,8 +34,7 @@ jq -r --argjson installed "$installed_ids" --arg mode "$sort_mode" '
     | {
         plugin_id: $m.id,
         name: $m.name,
-        full_name: $repo.fullName,
-        subdir: ($m.path | if test("/") then sub("/[^/]+$"; "") else "" end),
+        description: (($m.description // $repo.description // "no description") | gsub("[\t\n\r]"; " ")),
         stars: $repo.stars,
         updated_at: $repo.pushedAt,
         created_at: $repo.createdAt,
@@ -43,8 +48,7 @@ jq -r --argjson installed "$installed_ids" --arg mode "$sort_mode" '
       (if .installed then "1" else "0" end),
       .plugin_id,
       .name,
-      .full_name,
-      .subdir,
+      .description,
       (.stars | tostring),
       .updated_at
     ]

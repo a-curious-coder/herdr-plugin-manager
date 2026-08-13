@@ -22,6 +22,14 @@
 # '?' is a genuine help overlay: it flips HELP_FILE and forces the preview
 # to redraw via refresh-preview, showing help.sh's full legend in place of
 # the per-row detail until toggled off again.
+#
+# --delimiter + --with-nth: colorize.sh/colorize-catalog.sh emit real
+# tab-delimited fields (marker, plugin_id, name, ...) — plugin_id (field 2)
+# is never displayed (--with-nth skips it) but {2} in --bind/--preview still
+# resolves to it, since fzf keeps the original delimited fields addressable
+# regardless of what --with-nth shows. Confirmed with a tmux-driven fzf test
+# before relying on it — this is the same "verify, don't assume" lesson as
+# the rebind/unbind discovery above.
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -44,6 +52,7 @@ if command -v fzf >/dev/null 2>&1; then
     | fzf --ansi \
           --header="$(bash "$script_dir/mode-header.sh")" \
           --prompt="/" --no-input --no-sort --exact --layout=reverse-list \
+          --delimiter=$'\t' --with-nth='{1} {3} {4} {5} {6}' \
           --bind='q:abort' \
           --bind='/:show-input+enable-search+clear-query+unbind(q)+unbind(u)+unbind(i)+unbind(s)+unbind(r)+unbind(d)+unbind(a)+unbind(z)+unbind(o)+unbind(h)+unbind(j)+unbind(k)+unbind(l)+unbind(?)' \
           --bind='esc:clear-query+hide-input+rebind(q)+rebind(u)+rebind(i)+rebind(s)+rebind(r)+rebind(d)+rebind(a)+rebind(z)+rebind(o)+rebind(h)+rebind(j)+rebind(k)+rebind(l)+rebind(?)' \
