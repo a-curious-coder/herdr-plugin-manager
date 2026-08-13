@@ -10,6 +10,8 @@ Keybindings
 /     search — hidden until pressed; bare letters are shortcuts until then
 esc   cancel search, back to the full list (does not close the pane)
 q     quit — closes the pane (works once you've backed out of search)
+j/k   move down/up one row (also: down/up arrows)
+h/l   jump half a page up/down (also: page-up/page-down)
 tab   switch between Installed and Browse registry views
 enter Installed: toggle enable/disabled  ·  Browse: confirm + install
 r     refresh — re-check for updates (Installed) / re-fetch registry (Browse)

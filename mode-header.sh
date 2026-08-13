@@ -7,10 +7,10 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$script_dir/paths.sh"
 
 if [[ "$(current_mode)" == "catalog" ]]; then
-  echo "Plugins — BROWSE REGISTRY (tab: back to installed) · green check = already installed"
+  echo "Plugins — BROWSE REGISTRY (tab: back to installed) · green check = already installed · j/k/h/l or arrows to move"
   sort_mode=$([[ -f "$SORT_FILE" ]] && cat "$SORT_FILE" || echo "stars")
   echo "/ search (esc cancels) · enter install · a run/bind action · s sort [${sort_mode}] · d uninstall · r re-fetch · z zoom preview · o open repo · ? help · q quit"
 else
-  echo "Plugins — INSTALLED (tab: browse registry) · green enabled · yellow update · gray disabled · spinner updating"
+  echo "Plugins — INSTALLED (tab: browse registry) · green enabled · yellow update · gray disabled · spinner updating · j/k/h/l or arrows to move"
   echo "/ search (esc cancels) · enter toggle · a run/bind action · u update · i install by name · d uninstall · r refresh · z zoom preview · o open repo · ? help · q quit"
 fi

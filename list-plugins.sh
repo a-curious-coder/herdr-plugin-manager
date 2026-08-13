@@ -5,7 +5,7 @@
 # unified-render.sh, enter-dispatcher.sh, and preview-dispatcher.sh all read
 # it so one set of key bindings works across both.
 #
-# Bare letters (q/u/i/s/r/d/a/z/o/?) are commands, not search — --no-input keeps
+# Bare letters (q/u/i/s/r/d/a/z/o/h/j/k/l/?) are commands, not search — --no-input keeps
 # typing inert until '/' is pressed (iris's list-skills.sh does the same).
 # '/' unbind()s all of them so they fall through to fzf's real default
 # (insert-character) and type normally into the query; 'esc' rebind()s them
@@ -45,8 +45,12 @@ if command -v fzf >/dev/null 2>&1; then
           --header="$(bash "$script_dir/mode-header.sh")" \
           --prompt="/" --no-input --no-sort --exact --layout=reverse-list \
           --bind='q:abort' \
-          --bind='/:show-input+enable-search+clear-query+unbind(q)+unbind(u)+unbind(i)+unbind(s)+unbind(r)+unbind(d)+unbind(a)+unbind(z)+unbind(o)+unbind(?)' \
-          --bind='esc:clear-query+hide-input+rebind(q)+rebind(u)+rebind(i)+rebind(s)+rebind(r)+rebind(d)+rebind(a)+rebind(z)+rebind(o)+rebind(?)' \
+          --bind='/:show-input+enable-search+clear-query+unbind(q)+unbind(u)+unbind(i)+unbind(s)+unbind(r)+unbind(d)+unbind(a)+unbind(z)+unbind(o)+unbind(h)+unbind(j)+unbind(k)+unbind(l)+unbind(?)' \
+          --bind='esc:clear-query+hide-input+rebind(q)+rebind(u)+rebind(i)+rebind(s)+rebind(r)+rebind(d)+rebind(a)+rebind(z)+rebind(o)+rebind(h)+rebind(j)+rebind(k)+rebind(l)+rebind(?)' \
+          --bind='j:down' \
+          --bind='k:up' \
+          --bind='h:half-page-up' \
+          --bind='l:half-page-down' \
           --bind="enter:execute(bash '$script_dir/enter-dispatcher.sh' {2})+reload(bash '$script_dir/unified-render.sh')" \
           --bind="u:execute-silent(bash '$script_dir/start-update.sh' {2})+reload(bash '$script_dir/unified-render.sh')" \
           --bind="i:execute(bash '$script_dir/install.sh')+reload(bash '$script_dir/unified-render.sh')" \
